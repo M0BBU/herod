@@ -176,8 +176,12 @@ impl ArmInstruction {
             // MOV
             0x0D => {
                 cpu.regs.set_reg(reg_dest, op2);
-                log::debug!("MOV: Setting reg {} to result {} with hex {:#2X}", reg_dest, op2, op2);
-
+                log::debug!(
+                    "MOV: Setting reg {} to result {} with hex {:#2X}",
+                    reg_dest,
+                    op2,
+                    op2
+                );
             }
             _ => panic!("Opcode {:#2X} not implemented for data proc!", opcode),
         }
@@ -206,7 +210,6 @@ impl ArmInstruction {
         let is_imm = (instr >> 25) & 0x01 == 1;
         // 0=CPSR, 1=SPSR_<current mode>
         let psr = (instr >> 22) & 0x01 == 1;
-
     }
 
     pub fn single_data_transfer(cpu: &mut arm7tdmi::Processor, bus: &mut bus::Bus, instr: u32) {
@@ -343,7 +346,11 @@ impl ArmInstruction {
         if writeback || !pre {
             let base = cpu.regs.get_reg(reg_base);
             cpu.regs.set_reg(reg_base, base + offset);
-            log::debug!("Writing to reg {} with value {:#2X}", reg_base, base + offset);
+            log::debug!(
+                "Writing to reg {} with value {:#2X}",
+                reg_base,
+                base + offset
+            );
         }
     }
 

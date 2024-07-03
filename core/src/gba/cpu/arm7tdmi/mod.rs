@@ -46,7 +46,7 @@ pub enum PSRFlags {
     AbortOff,
     IRQOff,
     FIQOff,
-    Thumb
+    Thumb,
 }
 
 impl Processor {
@@ -227,7 +227,6 @@ impl Registers {
             _ => panic!("TODO"),
         }
     }
-
 
     pub fn check_cond(&self, cond: u32) -> bool {
         let n: bool = (self.cpsr >> 31) & 0x01 == 1;

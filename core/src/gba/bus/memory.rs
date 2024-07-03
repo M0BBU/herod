@@ -1,5 +1,3 @@
-
-
 pub struct Memory {
     wram_board: Vec<u8>,
     wram_chip: Vec<u8>,
@@ -21,17 +19,21 @@ impl Memory {
         match address >> 24 {
             0x2 => self.wram_board[(address & 0x03_FF_FF) as usize],
             0x3 => self.wram_chip[(address & 0x00_7F_FF) as usize],
-            _ => panic!("Trying to read WRAM at {:#2X}, should not have happened!", address),
+            _ => panic!(
+                "Trying to read WRAM at {:#2X}, should not have happened!",
+                address
+            ),
         }
     }
-
 
     pub fn write_wram(&mut self, address: u32, value: u8) {
         match address >> 24 {
             0x2 => self.wram_board[(address & 0x03_FF_FF) as usize] = value,
             0x3 => self.wram_chip[(address & 0x00_7F_FF) as usize] = value,
-            _ => panic!("Trying to write to WRAM at {:#2X}, should not have happened!", address),
+            _ => panic!(
+                "Trying to write to WRAM at {:#2X}, should not have happened!",
+                address
+            ),
         }
     }
-
 }

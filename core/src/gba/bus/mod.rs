@@ -19,7 +19,11 @@ pub struct Bus {
 
 impl Bus {
     pub fn new(mem: memory::Memory, cartridge: cartridge::Cartridge, ppu: ppu::Ppu) -> Bus {
-        Bus { mem, cartridge, ppu }
+        Bus {
+            mem,
+            cartridge,
+            ppu,
+        }
     }
 
     pub fn read_word(&mut self, address: u32) -> u32 {
@@ -29,10 +33,10 @@ impl Bus {
         // by the amount it was mis-aligned * 8, hence the shift val.
         let aligned_addr = address & !3;
         let shift = address & 3;
-        let value = u32::from(self.read_byte(aligned_addr)) |
-        u32::from(self.read_byte(aligned_addr | 1)) << 8 |
-        u32::from(self.read_byte(aligned_addr | 2)) << 16|
-        u32::from(self.read_byte(aligned_addr | 3)) << 24;
+        let value = u32::from(self.read_byte(aligned_addr))
+            | u32::from(self.read_byte(aligned_addr | 1)) << 8
+            | u32::from(self.read_byte(aligned_addr | 2)) << 16
+            | u32::from(self.read_byte(aligned_addr | 3)) << 24;
 
         value.rotate_right(shift << 3)
     }
@@ -41,8 +45,8 @@ impl Bus {
         let aligned_addr = address & !1;
         let shift = address & 1;
         log::debug!("Aligned address is {:#2X}", aligned_addr);
-        let value = u32::from(self.read_byte(aligned_addr)) |
-        u32::from(self.read_byte(aligned_addr | 1)) << 8;
+        let value = u32::from(self.read_byte(aligned_addr))
+            | u32::from(self.read_byte(aligned_addr | 1)) << 8;
 
         // TODO: Might need to do more stuff here
 
@@ -55,12 +59,8 @@ impl Bus {
             0x06 => self.ppu.read_vram(address),
             // This isn't necessarily right because some io registers belong to
             // sound channels I believe. Need to check for that?
-            0x04 => {
-                self.ppu.read_io(address)
-            },
-            0x02..=0x03 => {
-                self.mem.read_wram(address)
-            },
+            0x04 => self.ppu.read_io(address),
+            0x02..=0x03 => self.mem.read_wram(address),
             _ => unimplemented!("Invalid address {:#2X}!", address),
         }
     }
@@ -86,9 +86,7 @@ impl Bus {
             0x06 => self.ppu.write_vram(address, value),
             0x05 => self.ppu.write_pram(address, value),
             0x04 => self.ppu.write_io(address, value),
-            0x02..=0x03 => {
-                self.mem.write_wram(address, value)
-            },
+            0x02..=0x03 => self.mem.write_wram(address, value),
             _ => unimplemented!("Invalid address {:#2X}!", address),
         }
     }

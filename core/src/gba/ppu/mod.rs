@@ -87,7 +87,7 @@ impl Ppu {
         let pixel = u32::from(self.pram[palette_idx]) | u32::from(self.pram[palette_idx + 1]) << 8;
 
         let r: u32 = (pixel & 0x1F) << 3;
-        let g: u32 = ((pixel >>  5) & 0x1F) << 3;
+        let g: u32 = ((pixel >> 5) & 0x1F) << 3;
         let b: u32 = ((pixel >> 10) & 0x1F) << 3;
 
         // Set the alpha first
@@ -98,7 +98,6 @@ impl Ppu {
         rgba |= b;
 
         self.palette[palette_idx] = rgba;
-
     }
 
     pub fn write_io(&mut self, address: u32, value: u8) {
@@ -152,7 +151,7 @@ impl Ppu {
                         | (u32::from(self.vram[(vram_addr | 1) as usize]) << 8);
 
                     let r: u32 = (pixel & 0x1F) << 3;
-                    let g: u32 = ((pixel >>  5) & 0x1F) << 3;
+                    let g: u32 = ((pixel >> 5) & 0x1F) << 3;
                     let b: u32 = ((pixel >> 10) & 0x1F) << 3;
 
                     // Set the alpha first
@@ -170,7 +169,7 @@ impl Ppu {
                     self.output[(i + buffer_addr) as usize] = rgba;
                     vram_addr += 2;
                 }
-            },
+            }
             4 => {
                 let buffer_addr = self.io_regs.v_count * 240;
                 let window0 = (self.io_regs.disp_ctrl >> 13) & 0x01 == 1;
@@ -187,7 +186,7 @@ impl Ppu {
                     self.output[(i + buffer_addr) as usize] = self.palette[idx];
                     vram_addr += 1;
                 }
-            },
+            }
             _ => panic!("Video mode {} not implemented yet!", mode),
         }
         self.io_regs.v_count += 1;

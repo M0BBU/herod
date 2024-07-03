@@ -1,8 +1,8 @@
 use herod_gba_core::gba;
 
-use minifb::{Key, Window, WindowOptions, Scale};
-use simple_logger::SimpleLogger;
 use log::LevelFilter;
+use minifb::{Key, Scale, Window, WindowOptions};
+use simple_logger::SimpleLogger;
 
 const WIDTH: usize = 240;
 const HEIGHT: usize = 160;
@@ -19,14 +19,13 @@ fn main() {
         WIDTH,
         HEIGHT,
         WindowOptions {
-
             resize: true,
             scale: Scale::X4,
             ..WindowOptions::default()
         },
     )
     .unwrap_or_else(|e| {
-       panic!("{}", e);
+        panic!("{}", e);
     });
 
     let mut test_gba = gba::HerodGBA::new();
@@ -39,9 +38,7 @@ fn main() {
     while window.is_open() && !window.is_key_down(Key::Escape) {
         buffer = test_gba.render_frame();
 
-       // We unwrap here as we want this code to exit if it fails. Real applications may want to handle this in a different way
-       window
-           .update_with_buffer(&buffer, WIDTH, HEIGHT)
-           .unwrap();
+        // We unwrap here as we want this code to exit if it fails. Real applications may want to handle this in a different way
+        window.update_with_buffer(&buffer, WIDTH, HEIGHT).unwrap();
     }
 }
