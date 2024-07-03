@@ -1,6 +1,6 @@
 # Herod
 
-Herod is am emulator for the Nintendo Game Boy Advance. It is
+Herod is an emulator for the Nintendo Game Boy Advance. It is
 mostly written for learning purposes.
 
 Currently runs a few basic test roms. Currently working on
